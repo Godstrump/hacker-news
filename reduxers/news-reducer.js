@@ -17,7 +17,7 @@ export const getNewsReducer = (state = initialState, action) => {
     case FETCH_IDS:
       return {
         ...state,
-        loading: true,
+        loading: false,
         storyIds: action.payload,
       };
     case FETCH_ERROR:

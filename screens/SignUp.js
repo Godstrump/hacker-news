@@ -79,7 +79,7 @@ const SignUp = () => {
       setConfirmPassError(true);
       return;
     }
-    dispatch(signUpUser(username, password, navigate, naught));
+    dispatch(signUpUser(username?.toLowerCase(), password, navigate, naught));
   };
 
   return (

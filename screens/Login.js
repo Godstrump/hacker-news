@@ -23,8 +23,6 @@ const Login = () => {
   const [passError, setPassError] = useState(null);
   const [usernameError, setUsernameError] = useState(null);
 
-  console.log('hello');
-
   const onChangeUsername = value => {
     if (usernameError) {
       setUsernameError(null);
@@ -65,7 +63,7 @@ const Login = () => {
     }
     setUsername(null);
     setPassword(null);
-    dispatch(signInUser(username, password, navigate, naught));
+    dispatch(signInUser(username?.toLowerCase(), password, navigate, naught));
   };
 
   return (

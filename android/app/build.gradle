@@ -217,6 +217,12 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            storeFile file('hkn.keystore')
+            storePassword '1234567890'
+            keyAlias 'hkn'
+            keyPassword '1234567890'
+        }
     }
     buildTypes {
         debug {
@@ -228,6 +234,7 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
         }
     }
 

@@ -3,6 +3,11 @@ import {createSelector} from 'reselect';
 const selectNews = state => state.news;
 const selectHacker = state => state.users;
 
+export const selectNewsLoader = createSelector(
+  [selectNews],
+  news => news.loading,
+);
+
 export const selectStoryIds = currentPage =>
   createSelector([selectNews], news => news.storyIds?.slice(0, currentPage));
 
