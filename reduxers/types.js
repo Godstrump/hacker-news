@@ -1,0 +1,11 @@
+export const FETCH_ERROR = 'FETCH_ERROR';
+export const FETCHING = 'FETCHING';
+export const FETCH_IDS = 'FETCH_IDS';
+export const UNSUBSCRIBE = 'UNSUBSCRIBE';
+export const INIT_DB = 'INIT_DB';
+export const DB_CONNECTION = 'DB_CONNECTION';
+export const SIGNUP = 'SIGNUP';
+export const LOGIN = 'LOGIN';
+export const DISCONNECTED = 'DISCONNECTED';
+export const LOGOUT = 'LOGOUT';
+export const CLEAR_LOG = 'CLEAR_LOG';

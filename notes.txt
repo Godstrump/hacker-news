@@ -1,0 +1,326 @@
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ * @flow strict-local
+ */
+//  B2JWKDV B2JWG1G
+import React from 'react';
+import type {Node} from 'react';
+import {
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+} from 'react-native';
+
+import {
+  Colors,
+  DebugInstructions,
+  Header,
+  LearnMoreLinks,
+  ReloadInstructions,
+} from 'react-native/Libraries/NewAppScreen';
+
+/* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
+ * LTI update could not be added via codemod */
+const Section = ({children, title}): Node => {
+  const isDarkMode = useColorScheme() === 'dark';
+  return (
+    <View style={styles.sectionContainer}>
+      <Text
+        style={[
+          styles.sectionTitle,
+          {
+            color: isDarkMode ? Colors.white : Colors.black,
+          },
+        ]}>
+        {title}
+      </Text>
+      <Text
+        style={[
+          styles.sectionDescription,
+          {
+            color: isDarkMode ? Colors.light : Colors.dark,
+          },
+        ]}>
+        {children}
+      </Text>
+    </View>
+  );
+};
+
+const App: () => Node = () => {
+  const isDarkMode = useColorScheme() === 'dark';
+
+  const backgroundStyle = {
+    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  };
+
+  return (
+    <SafeAreaView style={backgroundStyle}>
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={backgroundStyle.backgroundColor}
+      />
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        style={backgroundStyle}>
+        <Header />
+        <View
+          style={{
+            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+          }}>
+          <Section title="Step One">
+            Edit <Text style={styles.highlight}>App.js</Text> to change this
+            screen and then come back to see your edits.
+          </Section>
+          <Section title="See Your Changes">
+            <ReloadInstructions />
+          </Section>
+          <Section title="Debug">
+            <DebugInstructions />
+          </Section>
+          <Section title="Learn More">
+            Read the docs to discover what to do next:
+          </Section>
+          <LearnMoreLinks />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  sectionContainer: {
+    marginTop: 32,
+    paddingHorizontal: 24,
+  },
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: '600',
+  },
+  sectionDescription: {
+    marginTop: 8,
+    fontSize: 18,
+    fontWeight: '400',
+  },
+  highlight: {
+    fontWeight: '700',
+  },
+});
+
+export default App;
+
+
+
+import React from 'react';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import Login from './screens/Login';
+import SignUp from './screens/SignUp';
+import Dashboard from './screens/Dashboard';
+import DrawerScreen from './screens/Drawer';
+import WelcomeScreen from './screens/Welcome';
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from '@react-navigation/drawer';
+
+const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
+
+const DrawerNavigator = () => (
+  <Drawer.Navigator
+    screenOptions={{headerShown: false}}
+    initialRouteName="Home"
+    drawerContent={props => {
+      return (
+        <DrawerContentScrollView {...props}>
+          <DrawerItem label={DrawerScreen} />
+        </DrawerContentScrollView>
+      );
+    }}>
+    <Drawer.Screen name="Home" component={Dashboard} />
+  </Drawer.Navigator>
+);
+
+const AppNavigator = () => {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Group>
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="Welcome" component={WelcomeScreen} />
+        <Stack.Screen name="Dashboard" component={DrawerNavigator} />
+        <Stack.Screen name="Nav" component={DrawerNavigator} />
+      </Stack.Group>
+    </Stack.Navigator>
+  );
+};
+
+export default AppNavigator;
+
+
+
+  // const mounted = useRef(false);
+
+  // useEffect(() => {
+  //   console.log('heyy');
+  //   mounted.current = true;
+
+  //   return () => {
+  //     mounted.current = false;
+  //   };
+  // }, []);
+  
+
+
+
+
+
+  // create table if not exists
+  // dbc.transaction(txn => {
+  //   txn.executeSql(
+  //     `CREATE TABLE IF NOT EXISTS ${tableName} (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, username TEXT NOT NULL UNIQUE, password TEXT NOT NULL)`,
+  //     [],
+  //     (sqlTxn, res) => {
+  //       console.log('table created successfully');
+  //     },
+  //     error => {
+  //       console.log('error on creating table' + error.message);
+  //     },
+  //   );
+  // });
+
+  export const saveHacker = (dbc, hackers) => {
+  console.log(hackers);
+  dbc.transaction(txn => {
+    txn.executeSql(
+      `INSERT INTO ${tableName} (username, password) VALUES (${hackers.username}, ${hackers.password})`,
+      [],
+      (sqlTxn, res) => {
+        console.log('created successfully');
+      },
+      error => {
+        console.log('*error on creating table' + error.message);
+      },
+    );
+  });
+};
+
+export const getHackers = async dbc => {
+  let results = [];
+  const query = txn =>
+    txn.executeSql(
+      `SELECT * FROM ${tableName} ORDER BY id DESC`,
+      [],
+      (sqlTxn, res) => {
+        console.log('data retrieved successfully');
+        let len = res.rows.length;
+        if (len > 0) {
+          for (let i = 0; i < len; i++) {
+            let item = res.rows.item(i);
+            results.push({id: item.id, username: item.username});
+          }
+        }
+      },
+      error => {
+        console.log('error on creating table' + error.message);
+      },
+    );
+  await dbc.transaction(query);
+  return results;
+};
+
+import React from 'react';
+import {TextInput, StyleSheet, View} from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+const Input = ({
+  onChange,
+  ph,
+  phtc,
+  fi,
+  theme,
+  secureInput,
+  icon,
+  ...props
+}) => {
+  const styles = useStyles(theme);
+
+  const HideInput = ({handleEye}) => {
+    return secureInput === true ? (
+      <Ionicons
+        style={styles.eye}
+        name={'md-eye-off-outline'}
+        size={20}
+        color={theme.colors.secondary}
+        onPress={handleEye}
+      />
+    ) : secureInput === false ? (
+      <Ionicons
+        onPress={handleEye}
+        style={styles.eye}
+        name={'md-eye-outline'}
+        size={20}
+        color={theme.colors.secondary}
+      />
+    ) : (
+      ''
+    );
+  };
+
+  return (
+    <View style={styles.inputContainer}>
+      <TextInput
+        onChangeText={onChange}
+        secureTextEntry={secureInput}
+        placeholder={ph}
+        placeholderTextColor={phtc}
+        inlineImageLeft={icon}
+        style={[styles.input, fi ? styles.firstInput : '']}
+      />
+      <HideInput {...props} />
+    </View>
+  );
+};
+
+const useStyles = theme => {
+  const styles = StyleSheet.create({
+    inputContainer: {
+      position: 'relative',
+    },
+    input: {
+      height: 47,
+      width: '100%',
+      paddingLeft: 17,
+      fontFamily: theme.fonts.main,
+      fontSize: 16,
+      color: theme.colors.secondary,
+      borderRadius: 5,
+      borderLeftWidth: 2,
+      borderTopWidth: 2,
+      borderRightWidth: 2,
+      borderStartWidth: 2,
+      borderBottomWidth: 2,
+      borderColor: theme.colors.secondary,
+    },
+    firstInput: {
+      marginBottom: 32,
+    },
+    eye: {
+      position: 'absolute',
+      right: 10,
+      top: 14,
+    },
+  });
+  return styles;
+};
+
+export default Input;
