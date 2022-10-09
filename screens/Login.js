@@ -23,6 +23,8 @@ const Login = () => {
   const [passError, setPassError] = useState(null);
   const [usernameError, setUsernameError] = useState(null);
 
+  console.log('hello');
+
   const onChangeUsername = value => {
     if (usernameError) {
       setUsernameError(null);
