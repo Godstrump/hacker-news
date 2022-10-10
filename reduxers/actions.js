@@ -23,13 +23,13 @@ export const unsubscribe = () => ({
   type: UNSUBSCRIBE,
 });
 
-export const fetchTopStoryIds = currentPage => async dispatch => {
+export const fetchTopStoryIds = () => async dispatch => {
   try {
     dispatch({type: FETCHING});
     const res = await axios.get(`${API}/topstories.json`);
     dispatch({
       type: FETCH_IDS,
-      payload: [...new Set(res?.data?.slice(0, currentPage))],
+      payload: [...new Set(res?.data)],
     });
   } catch (error) {
     dispatch({
@@ -39,13 +39,13 @@ export const fetchTopStoryIds = currentPage => async dispatch => {
   }
 };
 
-export const fetchNewStoryIds = currentPage => async dispatch => {
+export const fetchNewStoryIds = () => async dispatch => {
   try {
     dispatch({type: FETCHING});
     const res = await axios.get(`${API}/newstories.json`);
     dispatch({
       type: FETCH_IDS,
-      payload: [...new Set(res?.data?.slice(0, currentPage))],
+      payload: [...new Set(res?.data)],
     });
   } catch (error) {
     dispatch({

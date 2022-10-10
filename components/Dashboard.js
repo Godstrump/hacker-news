@@ -9,10 +9,11 @@ import {
 } from 'react-native';
 import {Avatar} from 'react-native-paper';
 import {useTheme} from 'react-native-paper';
-import {selectStoryIds} from '../reduxers/selectors';
+import {selectStoryIds, selectNewsError} from '../reduxers/selectors';
 import Story from '../components/Story';
 import {useNavigation} from '@react-navigation/native';
 import Header from '../components/Header';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Dashboard = ({header, onReload}) => {
   const theme = useTheme();
@@ -20,13 +21,21 @@ const Dashboard = ({header, onReload}) => {
   const navigation = useNavigation();
   const [currentPage, setCurrentPage] = useState(10);
   const storyIds = useSelector(selectStoryIds(currentPage));
+  const errors = useSelector(selectNewsError);
 
   const handleNav = () => navigation.openDrawer();
 
   const renderStory = ({item}) => <Story theme={theme} storyId={item} />;
   const renderLoader = () => (
     <View style={styles.loader}>
-      <ActivityIndicator size={'large'} color={'#aaa'} />
+      {errors ? (
+        <View style={styles.errorContainer}>
+          <Ionicons name={'md-error-outline'} size={30} color={'#C31B1B'} />
+          <Text style={styles.errors}>{errors}</Text>
+        </View>
+      ) : (
+        <ActivityIndicator size={'large'} color={'#aaa'} />
+      )}
     </View>
   );
   const loadMoreItem = () => setCurrentPage(state => state + 5);
@@ -74,6 +83,16 @@ const useStyles = theme => {
     loader: {
       marginVertical: 16,
       alignItems: 'center',
+    },
+    errorContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    errors: {
+      fontSize: 20,
+      color: theme.colors.primary,
+      flexDirection: 'column',
+      marginTop: 5,
     },
   });
   return makeStyles;

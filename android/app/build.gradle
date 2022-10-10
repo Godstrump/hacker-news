@@ -218,7 +218,7 @@ android {
             keyPassword 'android'
         }
         release {
-            storeFile file('hkn.keystore')
+            storeFile file('HackerNews.keystore')
             storePassword '1234567890'
             keyAlias 'hkn'
             keyPassword '1234567890'

@@ -8,6 +8,11 @@ export const selectNewsLoader = createSelector(
   news => news.loading,
 );
 
+export const selectNewsError = createSelector(
+  [selectNews],
+  news => news.errors,
+);
+
 export const selectStoryIds = currentPage =>
   createSelector([selectNews], news => news.storyIds?.slice(0, currentPage));
 
